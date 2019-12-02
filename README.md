@@ -30,6 +30,11 @@ python test.py \
 --how_many 0
 ```
 
+Need to put FloorPlan1_physics under the root directory.
+```
+python test.py --list "../FloorPlan1_physics/images.hdf5" --dataset_mode ai2thor --pretrained_model checkpoints/label2city/model
+```
+
 ### Citation
 If you find this work useful, please consider citing:
 
