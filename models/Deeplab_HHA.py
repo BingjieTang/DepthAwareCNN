@@ -2,7 +2,7 @@ import torch.nn as nn
 import math
 import torch.utils.model_zoo as model_zoo
 import torch
-from .base_model import BaseModel
+from models.base_model import BaseModel
 import numpy as np
 from . import losses
 import shutil

@@ -2,16 +2,16 @@ import torch.nn as nn
 import math
 import torch.utils.model_zoo as model_zoo
 import torch
-from .base_model import BaseModel
+from models.base_model import BaseModel
 import numpy as np
-from . import losses
+from models import losses
 import shutil
 from utils.util import *
 from torch.autograd import Variable
 from collections import OrderedDict
 from tensorboardX import SummaryWriter
 import os
-import VGG_Deeplab as VGG_Deeplab
+from models import VGG_Deeplab as VGG_Deeplab
 
 
 class Deeplab_VGG(nn.Module):
@@ -71,7 +71,7 @@ class Deeplab_Solver(BaseModel):
                 self.load()
                 print("Successfully loaded model, continue training....!")
 
-        self.model.cuda()
+        # self.model.cuda()
         self.normweightgrad=0.
         # if len(opt.gpu_ids):#opt.isTrain and
         #     self.model = torch.nn.DataParallel(self.model, device_ids=opt.gpu_ids)
@@ -79,19 +79,21 @@ class Deeplab_Solver(BaseModel):
     def forward(self, data, isTrain=True):
         self.model.zero_grad()
 
-        self.image = Variable(data['image'], volatile=not isTrain).cuda()
+        self.image = Variable(data['image'], volatile=not isTrain)
+        # self.image = Variable(data['image'], volatile=not isTrain).cuda()
         if 'depth' in data.keys():
-            self.depth = Variable(data['depth'], volatile=not isTrain).cuda()
+            self.depth = Variable(data['depth'], volatile=not isTrain)
+            # self.depth = Variable(data['depth'], volatile=not isTrain).cuda()
         else:
             self.depth = None
-        if data['seg'] is not None:
-            self.seggt = Variable(data['seg'], volatile=not isTrain).cuda()
-        else:
-            self.seggt = None
+        # if data['seg'] is not None:
+        #     self.seggt = Variable(data['seg'], volatile=not isTrain).cuda()
+        # else:
+        self.seggt = None
 
         input_size = self.image.size()
 
-        self.segpred = self.model(self.image,self.depth)
+        self.segpred = self.model(self.image, self.depth)
         self.segpred = nn.functional.upsample(self.segpred, size=(input_size[2], input_size[3]), mode='bilinear')
         # self.segpred = nn.functional.log_softmax(nn.functional.upsample(self.segpred, size=(input_size[2], input_size[3]), mode='bilinear'))
 
@@ -172,15 +174,15 @@ class Deeplab_Solver(BaseModel):
 
         self.writer.add_scalar(self.opt.name+'/Learning_Rate/', lr, step)
 
-	self.optimizer.param_groups[0]['lr'] = lr
-	self.optimizer.param_groups[1]['lr'] = lr
-	self.optimizer.param_groups[2]['lr'] = lr
-	self.optimizer.param_groups[3]['lr'] = lr
-	# self.optimizer.param_groups[0]['lr'] = lr
-	# self.optimizer.param_groups[1]['lr'] = lr*10
-	# self.optimizer.param_groups[2]['lr'] = lr*2 #* 100
-	# self.optimizer.param_groups[3]['lr'] = lr*20
-	# self.optimizer.param_groups[4]['lr'] = lr*100
+        self.optimizer.param_groups[0]['lr'] = lr
+        self.optimizer.param_groups[1]['lr'] = lr
+        self.optimizer.param_groups[2]['lr'] = lr
+        self.optimizer.param_groups[3]['lr'] = lr
+        # self.optimizer.param_groups[0]['lr'] = lr
+        # self.optimizer.param_groups[1]['lr'] = lr*10
+        # self.optimizer.param_groups[2]['lr'] = lr*2 #* 100
+        # self.optimizer.param_groups[3]['lr'] = lr*20
+        # self.optimizer.param_groups[4]['lr'] = lr*100
 
 
         # torch.nn.utils.clip_grad_norm(self.model.Scale.get_1x_lr_params_NOscale(), 1.)

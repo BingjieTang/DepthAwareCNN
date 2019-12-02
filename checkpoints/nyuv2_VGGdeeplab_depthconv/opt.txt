@@ -1,0 +1,54 @@
+------------ Options -------------
+batchSize: 1
+beta1: 0.5
+checkpoints_dir: ./checkpoints
+colorjitter: True
+continue_train: False
+crop: True
+dataroot: 
+dataset_mode: nyuv2
+debug: False
+decoder: psp_bilinear
+depthconv: True
+depthglobalpool: False
+display_freq: 100
+display_winsize: 512
+encoder: resnet50_dilated8
+fineSize: [480, 640]
+flip: True
+gpu_ids: [0]
+inputmode: bgr-mean
+isTrain: True
+iterSize: 10
+label_nc: 40
+list: dataset/lists/nyuv2/train.lst
+loadfroms: False
+lr: 0.00025
+lr_power: 0.9
+max_dataset_size: inf
+maxbatchsize: -1
+model: DeeplabVGG
+momentum: 0.9
+nThreads: 1
+name: nyuv2_VGGdeeplab_depthconv
+nepochs: 100
+no_html: False
+phase: train
+pretrained_model: 
+pretrained_model_HHA: 
+pretrained_model_rgb: 
+print_freq: 100
+save_epoch_freq: 10
+save_latest_freq: 1000
+scale: True
+serial_batches: False
+tf_log: False
+use_softmax: False
+vallist: dataset/lists/nyuv2/val.lst
+verbose: False
+warmup_iters: 500
+wd: 0.0004
+which_epoch: latest
+which_epoch_HHA: latest
+which_epoch_rgb: latest
+-------------- End ----------------

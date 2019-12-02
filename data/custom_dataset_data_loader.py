@@ -36,11 +36,19 @@ def CreateDataset(opt):
         else:
             dataset_val = None
 
+    elif opt.dataset_mode == 'ai2thor':
+        from data.ai2thor_dataset import Ai2ThorDataset, Ai2ThorDataset_val
+        dataset = Ai2ThorDataset()
+        if opt.vallist!='':
+            dataset_val = Ai2ThorDataset_val()
+        else:
+            dataset_val = None
+
     print("dataset [%s] was created" % (dataset.name()))
     dataset.initialize(opt)
     if dataset_val != None:
         dataset_val.initialize(opt)
-    return dataset,dataset_val
+    return dataset, dataset_val
 
 class CustomDatasetDataLoader(BaseDataLoader):
     def name(self):
